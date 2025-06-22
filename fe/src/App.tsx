@@ -8,7 +8,7 @@ function App() {
     const wsRef = useRef<WebSocket | null>(null);
   
     useEffect(() => {
-        const ws = new WebSocket("ws://localhost:8080");
+        const ws = new WebSocket("https://chatx-3uah.onrender.com");
         
         wsRef.current = ws;
 

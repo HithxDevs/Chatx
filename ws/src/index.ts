@@ -1,7 +1,24 @@
 import { WebSocketServer, WebSocket } from "ws";
+import { createServer } from "http";
+
+// Use Render's provided port or fallback to 8080 for local development
+const PORT = process.env.PORT || 8080;
+
+// Create HTTP server for health checks and WebSocket upgrade
+const server = createServer((req, res) => {
+    if (req.url === '/health') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ status: 'healthy', connections: allSockets.length }));
+        return;
+    }
+    
+    // Basic response for other requests
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('WebSocket Chat Server Running');
+});
 
 // Create WebSocket server attached to HTTP server
-const wss = new WebSocketServer({ port: 8080 });
+const wss = new WebSocketServer({ server });
 
 
 interface User {
